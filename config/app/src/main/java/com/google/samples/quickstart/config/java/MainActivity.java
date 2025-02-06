@@ -34,10 +34,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
 import com.google.samples.quickstart.config.R;
 import com.google.samples.quickstart.config.databinding.ActivityMainBinding;
 import com.google.firebase.remoteconfig.ConfigUpdateListener;
 import com.google.firebase.remoteconfig.ConfigUpdate;
+
+import java.util.Map;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -90,7 +94,11 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         // [END set_default_values]
 
-        // [START add_config_update_listener]
+        fetchWelcome();
+
+
+
+        /*// [START add_config_update_listener]
         mFirebaseRemoteConfig.addOnConfigUpdateListener(new ConfigUpdateListener() {
             @Override
             public void onUpdate(ConfigUpdate configUpdate) {
@@ -112,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // [END add_config_update_listener]
-
-        fetchWelcome();
+*/
     }
 
     /**
@@ -149,6 +156,13 @@ public class MainActivity extends AppCompatActivity {
      */
      // [START display_welcome_message]
     private void displayWelcomeMessage() {
+
+        for (Map.Entry<String, FirebaseRemoteConfigValue> s :
+                mFirebaseRemoteConfig.getAll().entrySet()) {
+            Log.d(TAG, "Key: " + s.getKey() + " " + "Value: " + s.getValue().asString());
+        }
+
+
         // [START get_config_values]
         String welcomeMessage = mFirebaseRemoteConfig.getString(WELCOME_MESSAGE_KEY);
         // [END get_config_values]
